@@ -1,0 +1,196 @@
+<!-- Name: TORRENO, Lerrica Jeremy S. -->
+<!-- Course/Year: BSCS-DS/1st year -->
+<!-- Finals project -->
+<!-- Date: January 14, 2024 -->
+
+<!--start of code for chat bot web page-->
+<!DOCTYPE html>
+    <html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IoT Device Controller ChatBot</title>
+
+    <style>
+    body {
+    background-image: url(https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?size=626&ext=jpg&ga=GA1.1.1412446893.1705104000&semt=ais);
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+    }
+
+    h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: bisque; 
+    text-align: center;
+    }
+
+    p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+    font-size: 15px;
+    color:bisque; 
+    text-align: center;
+    line-height: 0%;
+}
+
+#whole-chat .chat-container {
+    border-radius: 23px; 
+    border: 3px solid white;
+    background-color: #03070d; 
+    margin: auto;
+    width: 1000px;
+    height: 600px; 
+    align-items: center;
+    box-shadow: 1px 4px 12px -1px rgba(214, 204, 185, 0.85);
+    overflow: auto;
+}
+
+#whole-chat ::placeholder {
+    font-size: 18px;
+    color: black; 
+}
+
+#userInput {
+    position: fixed;
+    bottom: 20px;
+    width: 500px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 8px 0;
+    font-size: 18px;
+    align-items: center;
+}
+
+#textInput {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+#whole-chat .filter { 
+    position: relative;
+    width: 195px;
+    height: 30px;
+    border-radius: 5px; 
+    outline: none;
+    padding: 5px;
+    border: 1px solid; 
+    left: 20px; 
+    top: 0px; 
+    background-color: rgb(176, 212, 253);
+    padding: 0 20px;  
+}
+
+#chat-history .userText {
+    text-align: left;
+    line-height: 200%;
+    margin-left: 20px;
+}
+
+#chat-history .botText {
+    text-align: right;
+    line-height: 200%;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.scroll-bar {
+    height: 100%;
+    width: 130px;
+    border: 1px solid rgb(117, 201, 235);
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: auto;
+}
+
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    border: 1 px solid rgb(117, 201, 235);
+    border-radius: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(117, 201, 235);
+    border-radius: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(117, 201, 235);
+}
+
+    </style>    
+    </head>
+
+    <!--start of code for chatbox-->
+<body>
+
+        <!--start of code for header or the upper portion of the chatbox-->
+        <h3>IoT Device Controller ChatBot</h3>
+        <p>Hello there! I'm Tio, your friendly IoT device controller chatbot.</p>      
+        
+        <section id="whole-chat">
+            <div class="scrollbar">
+                <div class="chat-container">
+                    <div class="box-container">
+
+                        <div id="chatbox">
+                            <p class="botText"></p>
+                        </div>
+                        
+                        <div id="userInput">
+                            <input id="textInput" type="text" name="msg" class="filter" placeholder="Ask Tio..." />
+                        </div>
+                        
+                        <div id="chat-history">
+                            <p class="userText"></p> 
+                            <p class="botText"></p>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </section>
+            
+        <!--end of code for footer or the bottom portion of the chatbox-->
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function sendMessage() {
+            var userInput = $('#textInput').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/get_response',
+                data: { user_input: userInput },
+                success: function (response) {
+                    displayChat(userInput, response.response);
+                }
+            });
+
+            $('#textInput').val('');
+        }
+
+        function displayChat(userInput, botResponse) {
+            var chatHistory = $('#chat-history');
+            chatHistory.append('<p class="userText"> <b>You:</b> <br>'+ userInput + '</p>');
+            chatHistory.append('<p class="botText"> <b>Tio:</b> <br>' + botResponse + '</p>');
+        }
+
+        $(document).ready(function () {
+            $('#textInput').keypress(function (e) {
+                if (e.which === 13) {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+    <!--end of code fror chatbox-->
+
+</html>
+<!--end of code for chat bot web page-->
